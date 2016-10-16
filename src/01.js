@@ -1,6 +1,5 @@
 const _ = require('underscore');
 
-
 const splat = fun => array => fun.apply(null, array);
 
 const unsplat = fun => {
