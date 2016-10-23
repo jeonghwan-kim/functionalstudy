@@ -1,18 +1,7 @@
 const _ = require('underscore');
 const should = require('should');
+const util = require('./util');
 const _01 = require('./01');
-
-function captureStream(stream){
-  const oldWrite = stream.write;
-  let   buf = '';
-
-  stream.write = chunk => buf += chunk.toString();
-
-  return {
-    unhook() { stream.write = oldWrite; },
-    captured() { return buf; }
-  }
-}
 
 describe('01.js', () => {
   describe('splat()', () => {
@@ -31,7 +20,7 @@ describe('01.js', () => {
 
   describe('parseAge()', () => {
     let hook;
-    beforeEach('', () => hook = captureStream(process.stdout));
+    beforeEach('', () => hook = util.captureStream(process.stdout));
     afterEach('', () => hook.unhook());
 
     it('should parse number string', () => {
@@ -47,7 +36,7 @@ describe('01.js', () => {
 
   describe('warn()', () => {
     let hook;
-    before('', () => hook = captureStream(process.stdout));
+    before('', () => hook = util.captureStream(process.stdout));
     after('', () => hook.unhook());
     it('', () => {
       _01.warn('msg');
@@ -57,7 +46,7 @@ describe('01.js', () => {
 
   describe('note()', () => {
     let hook;
-    before('', () => hook = captureStream(process.stdout));
+    before('', () => hook = util.captureStream(process.stdout));
     after('', () => hook.unhook());
     it('', () => {
       _01.note('msg');
