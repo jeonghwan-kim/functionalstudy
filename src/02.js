@@ -9,8 +9,10 @@ const onlyEven = arr => _.filter(arr, n => (n % 2) === 0);
 
 const cat = (...args) => {
   const head = _.first(args);
-  if (_01.existy(head)) return head.concat.apply(head, _.rest(args));
-  else return [];
+  if (_01.existy(head))
+    return head.concat.apply(head, _.rest(args));
+  else
+    return [];
 };
 
 const construct = (head, tail) => cat([head], _.toArray(tail));

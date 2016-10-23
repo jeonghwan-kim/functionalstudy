@@ -79,7 +79,7 @@ describe('04.js', () => {
 
   describe('객체 검증자', () => {
     it('checker()', () => {
-      const alwaysPasses = _04.checker(_04.always(true), _04.always(true))
+      const alwaysPasses = _04.checker(_04.always(true), _04.always(true));
       alwaysPasses({}).should.have.length(0);
 
       const fails = _04.always(false);
