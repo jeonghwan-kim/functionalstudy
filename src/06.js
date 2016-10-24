@@ -101,7 +101,52 @@ const _06 = {
     }
 
     return tmp;
-  }
+  },
+  visit(mapFun, resultFun, array) {
+    if (_.isArray(array)) return resultFun(_.map(array, mapFun));
+    else                  return resultFun(array);
+  },
+};
+
+_06.postDepth = (fun, ary) => {
+  return _06.visit(_05.partial1(_06.postDepth, fun), fun, ary);
+};
+
+_06.preDepth = (fun, ary) => {
+  return _06.visit(_05.partial1(_06.preDepth, fun), fun, fun(ary));
+};
+
+_06.influencedWithStrategy = (strategy, lang, graph) => {
+  let results = [];
+
+  strategy(x => {
+    if (_.isArray(x) && _.first(x) === lang) results.push(_01.second(x));
+    return x;
+  }, graph);
+
+  return results;
+};
+
+_06.evenOline = (n) => {
+  if (n === 0) return true;
+  return _05.partial(_06.oddOline, Math.abs(n) - 1);
+};
+_06.oddOline = (n) => {
+  if (n === 0) return false;
+  return _05.partial(_06.evenOline, Math.abs(n) - 1);
+};
+_06.trampoline = (fun, ...args) => {
+  let result = fun.apply(fun, args)
+  while (_.isFunction(result)) result = result();
+  return result;
+};
+_06.isEvenSafe = n => {
+  if (n === 0) return true;
+  else return _06.trampoline(_05.partial1(_06.oddOline, Math.abs(n) -1 ));
+};
+_06.isOddSafe = n => {
+  if (n === 0) return false;
+  else return _06.trampoline(_05.partial1(_06.evenOline, Math.abs(n) -1 ));
 };
 
 module.exports = _06;

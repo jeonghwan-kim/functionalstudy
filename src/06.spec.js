@@ -9,6 +9,16 @@ const _05 = require('./05');
 const _06 = require('./06');
 
 describe('06.js', () => {
+  const influences = [
+    ['Lisp', 'Smalltalk'],
+    ['Lisp', 'Scheme'],
+    ['Smalltalk', 'Self'],
+    ['Scheme', 'JavaScript'],
+    ['Scheme', 'Lua'],
+    ['Self', 'Lua'],
+    ['Self', 'JavaScript']
+  ];
+
   describe('myLength()', () => {
     it('myLength()', () => {
       _06.myLength(_.range(10)).should.be.equal(10)
@@ -37,16 +47,6 @@ describe('06.js', () => {
     })
   });
   describe('graph', () => {
-    const influences = [
-      ['Lisp', 'Smalltalk'],
-      ['Lisp', 'Scheme'],
-      ['Smalltalk', 'Self'],
-      ['Scheme', 'JavaScript'],
-      ['Scheme', 'Lua'],
-      ['Self', 'Lua'],
-      ['Self', 'JavaScript']
-    ];
-
     it('next()', () => {
       _06.nexts(influences, 'Lisp').should.be.deepEqual(['Smalltalk', 'Scheme']);
     });
@@ -86,12 +86,49 @@ describe('06.js', () => {
   });
   describe('deepEqual()', () => {
     it('', () => {
-      let x = [{a: [1,2,3], b: 42}, {c: {d: []}}];
+      let x = [{a: [1, 2, 3], b: 42}, {c: {d: []}}];
       let y = _06.deepClone(x);
 
       _.isEqual(x, y).should.be.true;
       y[1].c.d = 42;
       _.isEqual(x, y).should.be.false;
+    });
+  });
+  describe('visit()', () => {
+    it('', () => {
+      _06.visit(_.identity, _.isNumber, 42).should.be.true;
+      _06.visit(_.isNumber, _.identity, [1, 2, null, 3])
+          .should.be.deepEqual([true, true, false, true]);
+      _06.visit(n => n * 2, _05.rev, _.range(10)).should.be.deepEqual(
+          [18, 16, 14, 12, 10, 8, 6, 4, 2, 0]);
     })
+  });
+  describe('postDepth()', () => {
+    it('', () => {
+      const r = _06.postDepth(x => (x === 'Lisp') ? 'LISP' : x, influences);
+      // console.log(r);
+    });
+  });
+  describe('influencedWithStrategy()', () => {
+    it('', () => {
+      _06.influencedWithStrategy(_06.postDepth, 'Lisp', influences)
+          .should.be.deepEqual(['Smalltalk', 'Scheme']);
+    })
+  });
+  describe('oddOline()', () => {
+    it('', () => {
+      _06.oddOline(1000001)()()().should.be.true;
+    })
+    it('trampoline()', () => {
+      _06.trampoline(_06.oddOline, 1000001).should.be.true;
+    })
+  });
+  describe('isEvenSafe()/isOddSafe()', () => {
+    it('isEvenSafe()', () => {
+      _06.isEvenSafe(1000001).should.be.true;
+    });
+    it('isOddSafe()', () => {
+      _06.isOddSafe(1000001).should.be.false;
+    });
   })
 });
