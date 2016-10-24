@@ -68,6 +68,7 @@ describe('05.js', () => {
   describe('curry3()', () => {
     it('136', () => {
       const songsPlayed = _05.curry3(_.uniq)(songToString)(false);
+      console.log(songsPlayed(plays))
       songsPlayed(plays).should.be.deepEqual([
         {artist: 'Burial', track: 'Archangel'},
         {artist: 'Ben Frost', track: 'Stomp'},
@@ -80,7 +81,7 @@ describe('05.js', () => {
         return n.length < 2 ? `0${n}` : n;
       };
       const rgbToHexString = (r, g, b) => `#${toHex(r)}${toHex(g)}${toHex(b)}`;
-      // rgbToHexString(255, 255, 255).should.be.equal('#ffffff');
+      rgbToHexString(255, 255, 255).should.be.equal('#ffffff');
       const blueGreenish = _05.curry3(rgbToHexString)(255)(200);
       blueGreenish(0).should.be.equal('#00c8ff');
     });

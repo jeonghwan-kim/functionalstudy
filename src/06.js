@@ -83,15 +83,6 @@ const _06 = {
     if (n === 0) return false;
     return this.evenSteven(Math.abs(n) - 1);
   },
-  flat(arr) {
-    if (_.isArray(arr)) {
-      // HACK
-      // return _02.cat.apply(_02.cat, _.map(arr, this.flat));
-      return _02.cat.apply(_02.cat, _.map(arr, a => this.flat(a)));
-    } else{
-      return [arr];
-    }
-  },
   deepClone(obj) {
     if (!_01.existy(obj) || !_.isObject(obj)) return obj;
 
@@ -147,6 +138,14 @@ _06.isEvenSafe = n => {
 _06.isOddSafe = n => {
   if (n === 0) return false;
   else return _06.trampoline(_05.partial1(_06.evenOline, Math.abs(n) -1 ));
+};
+
+_06.flat = arr => {
+  if (_.isArray(arr)) {
+    return _02.cat.apply(_02.cat, _.map(arr, _06.flat));
+  } else{
+    return [arr];
+  }
 };
 
 module.exports = _06;
