@@ -49,7 +49,7 @@ describe('04.js', () => {
     (g() === f()).should.be.false;
   });
 
-  it('invoder()', () => {
+  it('invoker()', () => {
     const rev = _04.invoker('reverse', Array.prototype.reverse);
     _.map([[1,2,3]], rev).should.be.deepEqual([[3,2,1]]);
   });
