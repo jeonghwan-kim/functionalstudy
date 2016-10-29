@@ -11,9 +11,10 @@ const _07 = require('./07');
 
 describe('07.js', () => {
   describe('randString()', () => {
-    it.only('', () => {
+    it('', () => {
+      // skip print
       // _07.randString(0).should.be.equal('')
-      console.log(_07.randString(10))
+      // console.log(_07.randString(10))
     })
 
   });
