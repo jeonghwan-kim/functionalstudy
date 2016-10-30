@@ -4,110 +4,94 @@ const _02 = require('./02');
 const _03 = require('./03');
 const _04 = require('./04');
 const _05 = require('./05');
+const __ = {};
 
-const _06 = {
-  myLength(ary) {
-    if (_.isEmpty(ary)) return 0;
-    return 1 + this.myLength(_.rest(ary));
-  },
-  tcLength(ary, n) {
-    const l = n ? n : 0;
-    if (_.isEmpty(ary)) return l;
-    else return this.tcLength(_.rest(ary), l + 1);
-  },
-  cycle(times, ary) {
-    if (times <= 0) return [];
-    return _02.cat(ary, this.cycle(times - 1, ary));
-  },
-  constructPair(pair, rests) {
-    return [_02.construct(_.first(pair), _.first(rests)),
-            _02.construct(_01.second(pair), _01.second(rests))];
-  },
-  unzip(pairs) {
-    if (_.isEmpty(pairs)) return [[], []];
-    return this.constructPair(_.first(pairs), this.unzip(_.rest(pairs)));
-  },
-  nexts(graph, node) {
-    if (_.isEmpty(graph)) return [];
+__.myLength = (ary) => {
+  if (_.isEmpty(ary)) return 0;
+  return 1 + __.myLength(_.rest(ary));
+};
+__.tcLength = (ary, n) => {
+  const l = n ? n : 0;
+  if (_.isEmpty(ary)) return l;
+  else return __.tcLength(_.rest(ary), l + 1);
+};
+__.cycle = (times, ary) => {
+  if (times <= 0) return [];
+  return _02.cat(ary, __.cycle(times - 1, ary));
+};
+__.constructPair = (pair, rests) => {
+  return [_02.construct(_.first(pair), _.first(rests)),
+          _02.construct(_01.second(pair), _01.second(rests))];
+};
+__.unzip = (pairs) => {
+  if (_.isEmpty(pairs)) return [[], []];
+  return __.constructPair(_.first(pairs), __.unzip(_.rest(pairs)));
+};
+__.nexts = (graph, node) => {
+  if (_.isEmpty(graph)) return [];
 
-    const pair = _.first(graph);
-    const from = _.first(pair);
-    const to = _01.second(pair);
-    const more = _.rest(graph);
+  const pair = _.first(graph);
+  const from = _.first(pair);
+  const to = _01.second(pair);
+  const more = _.rest(graph);
 
-    if (_.isEqual(node, from))
-      return _02.construct(to, this.nexts(more, node));
-    else
-      return this.nexts(more, node);
-  },
-  depthSearch(graph, nodes, seen) {
-    if (_.isEmpty(nodes)) return _05.rev(seen);
+  if (_.isEqual(node, from)) return _02.construct(to, __.nexts(more, node));
+  else return __.nexts(more, node);
+};
+__.depthSearch = (graph, nodes, seen) => {
+  if (_.isEmpty(nodes)) return _05.rev(seen);
 
-    const node = _.first(nodes);
-    const more = _.rest(nodes);
+  const node = _.first(nodes);
+  const more = _.rest(nodes);
 
-    if (_.contains(seen, node))
-      return this.depthSearch(graph, more, seen);
-    else
-      return this.depthSearch(graph,
-                             _02.cat(this.nexts(graph, node), more),
-                             _02.construct(node, seen));
-  },
-  andify(...preds) {
-    return (...args) => {
-      const everything = (ps, truth) => {
-        if (_.isEmpty(ps))
-          return truth;
-        else
-          return _.every(args, _.first(ps)) && everything(_.rest(ps), truth);
-      };
-      return everything(preds, true);
+  if (_.contains(seen, node)) return __.depthSearch(graph, more, seen);
+  else return __.depthSearch(graph,
+                               _02.cat(__.nexts(graph, node), more),
+                               _02.construct(node, seen));
+};
+__.andify = (...preds) => {
+  return (...args) => {
+    const everything = (ps, truth) => {
+      if (_.isEmpty(ps)) return truth;
+      else return _.every(args, _.first(ps)) && everything(_.rest(ps), truth);
     };
-  },
-  orify(...preds) {
-    return (...args) => {
-      const something = (ps, truth) => {
-        if (_.isEmpty(ps))
-          return truth;
-        else
-          return _.every(args, _.first(ps)) || something(_.rest(ps), truth);
-      };
-      return something(preds, true);
+    return everything(preds, true);
+  };
+};
+__.orify = (...preds) => {
+  return (...args) => {
+    const something = (ps, truth) => {
+      if (_.isEmpty(ps)) return truth;
+      else return _.every(args, _.first(ps)) || something(_.rest(ps), truth);
     };
-  },
-  evenSteven(n) {
-    if (n === 0) return true;
-    return this.oddJohn(Math.abs(n) - 1);
-  },
-  oddJohn(n) {
-    if (n === 0) return false;
-    return this.evenSteven(Math.abs(n) - 1);
-  },
-  deepClone(obj) {
-    if (!_01.existy(obj) || !_.isObject(obj)) return obj;
-
-    let tmp = new obj.constructor();
-    for (let key in obj) {
-      if (obj.hasOwnProperty(key)) tmp[key] = this.deepClone(obj[key]);
-    }
-
-    return tmp;
-  },
-  visit(mapFun, resultFun, array) {
-    if (_.isArray(array)) return resultFun(_.map(array, mapFun));
-    else                  return resultFun(array);
-  },
+    return something(preds, true);
+  };
 };
-
-_06.postDepth = (fun, ary) => {
-  return _06.visit(_05.partial1(_06.postDepth, fun), fun, ary);
+__.evenSteven = (n) => {
+  if (n === 0) return true;
+  return __.oddJohn(Math.abs(n) - 1);
 };
-
-_06.preDepth = (fun, ary) => {
-  return _06.visit(_05.partial1(_06.preDepth, fun), fun, fun(ary));
+__.oddJohn = (n) => {
+  if (n === 0) return false;
+  return __.evenSteven(Math.abs(n) - 1);
 };
+__.deepClone = (obj) => {
+  if (!_01.existy(obj) || !_.isObject(obj)) return obj;
 
-_06.influencedWithStrategy = (strategy, lang, graph) => {
+  let tmp = new obj.constructor();
+  for (let key in obj) {
+    if (obj.hasOwnProperty(key)) tmp[key] = __.deepClone(obj[key]);
+  }
+
+  return tmp;
+};
+__.visit = (mapFun, resultFun, array) => {
+  if (_.isArray(array)) return resultFun(_.map(array, mapFun));
+  else                  return resultFun(array);
+}
+__.postDepth = (fun, ary) => __.visit(_05.partial1(__.postDepth, fun), fun, ary);
+__.preDepth = (fun, ary) => __.visit(_05.partial1(__.preDepth, fun), fun, fun(ary));
+__.influencedWithStrategy = (strategy, lang, graph) => {
   let results = [];
 
   strategy(x => {
@@ -117,35 +101,30 @@ _06.influencedWithStrategy = (strategy, lang, graph) => {
 
   return results;
 };
-
-_06.evenOline = (n) => {
+__.evenOline = n => {
   if (n === 0) return true;
-  return _05.partial(_06.oddOline, Math.abs(n) - 1);
+  return _05.partial(__.oddOline, Math.abs(n) - 1);
 };
-_06.oddOline = (n) => {
+__.oddOline = n => {
   if (n === 0) return false;
-  return _05.partial(_06.evenOline, Math.abs(n) - 1);
+  return _05.partial(__.evenOline, Math.abs(n) - 1);
 };
-_06.trampoline = (fun, ...args) => {
-  let result = fun.apply(fun, args)
+__.trampoline = (fun, ...args) => {
+  let result = fun.apply(fun, args);
   while (_.isFunction(result)) result = result();
   return result;
 };
-_06.isEvenSafe = n => {
+__.isEvenSafe = n => {
   if (n === 0) return true;
-  else return _06.trampoline(_05.partial1(_06.oddOline, Math.abs(n) -1 ));
+  else return __.trampoline(_05.partial1(__.oddOline, Math.abs(n) -1 ));
 };
-_06.isOddSafe = n => {
+__.isOddSafe = n => {
   if (n === 0) return false;
-  else return _06.trampoline(_05.partial1(_06.evenOline, Math.abs(n) -1 ));
+  else return __.trampoline(_05.partial1(__.evenOline, Math.abs(n) -1 ));
+};
+__.flat = arr => {
+  if (_.isArray(arr)) return _02.cat.apply(_02.cat, _.map(arr, __.flat));
+  else return [arr];
 };
 
-_06.flat = arr => {
-  if (_.isArray(arr)) {
-    return _02.cat.apply(_02.cat, _.map(arr, _06.flat));
-  } else{
-    return [arr];
-  }
-};
-
-module.exports = _06;
+module.exports = __;

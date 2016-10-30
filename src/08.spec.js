@@ -18,7 +18,7 @@ describe('08.js', ()=> {
     it('force()', ()=> {
       new _08.LazyChain([2,1,3])
           .invoke('sort')
-          .force().should.be.equal([1,2,3]);
+          .force().should.be.deepEqual([1,2,3]);
     });
     it('multi invokes', ()=> {
       new _08.LazyChain([2,1,3])
@@ -48,7 +48,7 @@ describe('08.js', ()=> {
           .force().should.be.equal('1,2,3');
       hook.captured().should.be.equal('[ 1, 2, 3 ]\n');
     });
-    it.only('pipeline()', ()=> {
+    it('pipeline()', ()=> {
       (_08.pipeline() === undefined).should.be.true;
       _08.pipeline(42).should.be.equal(42);
       _08.pipeline(42, n => -n).should.be.equal(-42);

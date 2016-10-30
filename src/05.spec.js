@@ -68,7 +68,6 @@ describe('05.js', () => {
   describe('curry3()', () => {
     it('136', () => {
       const songsPlayed = _05.curry3(_.uniq)(songToString)(false);
-      console.log(songsPlayed(plays))
       songsPlayed(plays).should.be.deepEqual([
         {artist: 'Burial', track: 'Archangel'},
         {artist: 'Ben Frost', track: 'Stomp'},
