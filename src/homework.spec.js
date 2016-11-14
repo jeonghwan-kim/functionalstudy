@@ -2,7 +2,7 @@ const should = require('should');
 const homework = require('./homework');
 
 describe('homework', () => {
-  describe.only('solution1', () => {
+  describe('solution1', () => {
     it('should return sum value', () => {
       [1, 2, 3, 4].reduce(homework.solution1).should.be.equal(10);
       [1, 2, 3, 4, 5, 6, 7, 8, 9].reduce(homework.solution1).should.be.equal(45);
