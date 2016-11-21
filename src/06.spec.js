@@ -104,16 +104,34 @@ describe('06.js', () => {
     })
   });
   describe('postDepth()', () => {
-    it('', () => {
+    it.skip('', () => {
+      _06.postDepth(x=> {
+        console.log(x)
+        return x;
+      }, influences);
+    });
+    it.skip('', () => {
       const r = _06.postDepth(x => (x === 'Lisp') ? 'LISP' : x, influences);
-      // console.log(r);
+      console.log(r);
+    });
+  });
+  describe('preDepth()', () => {
+    it.skip('', () => {
+      _06.preDepth(x => {
+        console.log(x);
+        return x;
+      }, influences);
+    });
+    it.skip('', () => {
+      const r = _06.postDepth(x => (x === 'Lisp') ? 'LISP' : x, influences);
+      console.log(r);
     });
   });
   describe('influencedWithStrategy()', () => {
     it('', () => {
       _06.influencedWithStrategy(_06.postDepth, 'Lisp', influences)
           .should.be.deepEqual(['Smalltalk', 'Scheme']);
-    })
+    });
   });
   describe.skip('oddOline()', () => {
     it('', () => {

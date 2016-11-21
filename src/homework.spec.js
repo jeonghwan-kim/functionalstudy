@@ -1,3 +1,4 @@
+const _ = require('underscore');
 const should = require('should');
 const homework = require('./homework');
 
@@ -16,4 +17,25 @@ describe('homework', () => {
       (() => [1, 2, 3, 4, 5, 6, 7, 8, 9, 10].reduce(homework.solution1)).should.throw();
     });
   });
+  describe('solution3', () => {
+    const influences = [
+      ['Lisp', 'Smalltalk'],
+      ['Lisp', 'Scheme'],
+      ['Smalltalk', 'Self'],
+      ['Scheme', 'JavaScript'],
+      ['Scheme', 'Lua'],
+      ['Self', 'Lua'],
+      ['Self', 'JavaScript']
+    ];
+    it.only('should ...', () => {
+      homework.visit2(x => {
+        console.log(x);
+        return x;
+      }, influences);
+    });
+    it('should ...', () => {
+      r =homework.visit2(x => x, x => x, influences);
+      console.log(r);
+    })
+  })
 });

@@ -87,8 +87,8 @@ __.deepClone = (obj) => {
 };
 __.visit = (mapFun, resultFun, array) => {
   if (_.isArray(array)) return resultFun(_.map(array, mapFun));
-  else                  return resultFun(array);
-}
+  return resultFun(array);
+};
 __.postDepth = (fun, ary) => __.visit(_05.partial1(__.postDepth, fun), fun, ary);
 __.preDepth = (fun, ary) => __.visit(_05.partial1(__.preDepth, fun), fun, fun(ary));
 __.influencedWithStrategy = (strategy, lang, graph) => {
