@@ -1,6 +1,7 @@
 const _ = require('underscore');
 const should = require('should');
-const homework = require('./homework');
+const DOMParser = require('xmldom').DOMParser
+const homework = require('./homework1');
 
 describe('homework', () => {
   describe('solution1', () => {
