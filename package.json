@@ -5,6 +5,7 @@
   "main": "./src/index.js",
   "scripts": {
     "test": "node_modules/.bin/mocha --reporter=nyan ./src/**/*.spec.js",
+    "text.quiz": "mocha ./quiz/**/*.spec.js -w",
     "start": "node ./src"
   },
   "repository": {
